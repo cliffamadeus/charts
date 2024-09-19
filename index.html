@@ -11,11 +11,11 @@
       .flex-container {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
       }
     
       .flex-container > div {
-        background-color: #f1f1f1;
-        width:33.33%;
+        width:30.33%;
         height:33.33%;
         margin: 10px;
         line-height: 75px;
@@ -25,39 +25,57 @@
     </style>
   </head>
 <body>
-  
-    <div class="flex-container">
-      <!--BarChart-->
+
+  <!--Pie Chart Row-->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+      </div>
+      <div class="col-sm">
       <div class="card" style="width: 25rem;">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+      </div>
+      <div class="col-sm">
+      </div>
+    </div>
+  </div>
+  <div class="flex-container">
+
+      <!--BarChart-->
+      <div class="card" >
+        <div class="card-body">
+          <h5 class="card-title">Bar Chart</h5>
           <canvas id="myChart"></canvas>
         </div>
       </div>
 
-      <div class="card" style="width: 25rem;">
+      <!--Line-->
+      <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <canvas id="pieChart"></canvas>
+          <h5 class="card-title">Line</h5>
+          <canvas id="lineChart"></canvas>
         </div>
       </div>
 
-      <div class="card" style="width: 25rem;">
+      <!--Area-->
+      <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <canvas id="pieChart"></canvas>
+          <h5 class="card-title">Area</h5>
+          <canvas id="areaChart"></canvas>
         </div>
       </div>
-
-      
-
-    </div>
+  </div>
 
     
 <script>
 const barCtx = document.getElementById('myChart');
 const pieCtx = document.getElementById('pieChart');
-
+const lineCtx = document.getElementById('lineChart'); 
+const areaCtx = document.getElementById('areaChart'); 
 fetch('data.json')
   .then(response => {
     if (!response.ok) {
@@ -130,11 +148,54 @@ fetch('data.json')
         }
       }
     });
+    new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: data.data,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: false, // Set to false for a line chart without fill
+          borderWidth: 2
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Create the area chart
+    new Chart(areaCtx, {
+      type: 'line',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: data.data,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set fill color
+          fill: true, // Set to true for an area chart
+          borderWidth: 2
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   })
   .catch(error => {
     console.error('There has been a problem with your fetch operation:', error);
   });
-
 </script>
 </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+<script>
+const ctx = document.getElementById('myChart');
+
+fetch('data.json') 
+   //Response 
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.json();
+  })
+
+  //Fetch create data object
+  .then(data => {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], 
+        datasets: [{
+          label: '# of Votes',
+          data: data.data, 
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  })
+  .catch(error => {
+    console.error('There has been a problem with your fetch operation:', error);
+  });
+
+</script>
+</body>
+</html>

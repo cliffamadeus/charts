@@ -48,3 +48,6 @@ class ChartCreator {
         }
     }
 }
+
+const chartCreator = new ChartCreator('sample-data.json');
+chartCreator.init();

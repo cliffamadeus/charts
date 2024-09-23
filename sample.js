@@ -16,6 +16,31 @@ class ChartCreator {
         }
     }
 
+    createAreaChart(data) {
+        new Chart(this.areaCtx, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: data.data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+            
+        });
+    }
+
     async init() {
         const data = await this.fetchData();
         if (data) {

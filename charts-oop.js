@@ -1,10 +1,7 @@
 class ChartCreator {
     constructor(dataUrl) {
         this.dataUrl = dataUrl;
-        this.barCtx = document.getElementById('myChart');
-        this.pieCtx = document.getElementById('pieChart');
-        this.lineCtx = document.getElementById('lineChart');
-        this.areaCtx = document.getElementById('areaChart');
+        this.chartData = null;
     }
 
     async fetchData() {
@@ -13,10 +10,33 @@ class ChartCreator {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
-            return await response.json();
+            this.chartData = await response.json();
         } catch (error) {
             console.error('There has been a problem with your fetch operation:', error);
         }
+    }
+
+    async init() {
+        await this.fetchData();
+        if (this.chartData) {
+            this.createCharts();
+        }
+    }
+
+    createCharts() {
+        // This method will be overridden in subclasses
+        throw new Error('createCharts() must be implemented in subclasses');
+    }
+}
+
+class BarChart extends ChartCreator {
+    constructor(dataUrl) {
+        super(dataUrl);
+        this.barCtx = document.getElementById('myChart');
+    }
+
+    createCharts() {
+        this.createBarChart(this.chartData);
     }
 
     createBarChart(data) {
@@ -38,6 +58,17 @@ class ChartCreator {
                 }
             }
         });
+    }
+}
+
+class PieChart extends ChartCreator {
+    constructor(dataUrl) {
+        super(dataUrl);
+        this.pieCtx = document.getElementById('pieChart');
+    }
+
+    createCharts() {
+        this.createPieChart(this.chartData);
     }
 
     createPieChart(data) {
@@ -84,6 +115,17 @@ class ChartCreator {
             }
         });
     }
+}
+
+class LineChart extends ChartCreator {
+    constructor(dataUrl) {
+        super(dataUrl);
+        this.lineCtx = document.getElementById('lineChart');
+    }
+
+    createCharts() {
+        this.createLineChart(this.chartData);
+    }
 
     createLineChart(data) {
         new Chart(this.lineCtx, {
@@ -107,6 +149,17 @@ class ChartCreator {
                 }
             }
         });
+    }
+}
+
+class AreaChart extends ChartCreator {
+    constructor(dataUrl) {
+        super(dataUrl);
+        this.areaCtx = document.getElementById('areaChart');
+    }
+
+    createCharts() {
+        this.createAreaChart(this.chartData);
     }
 
     createAreaChart(data) {
@@ -132,18 +185,17 @@ class ChartCreator {
             }
         });
     }
-
-    async init() {
-        const data = await this.fetchData();
-        if (data) {
-            this.createBarChart(data);
-            this.createPieChart(data);
-            this.createLineChart(data);
-            this.createAreaChart(data);
-        }
-    }
 }
 
-// Create an instance of ChartCreator and initialize it
-const chartCreator = new ChartCreator('data.json');
-chartCreator.init();
+// Example usage
+const barChart = new BarChart('data.json');
+barChart.init();
+
+const pieChart = new PieChart('data.json');
+pieChart.init();
+
+const lineChart = new LineChart('data.json');
+lineChart.init();
+
+const areaChart = new AreaChart('data.json');
+areaChart.init();

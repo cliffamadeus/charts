@@ -1,0 +1,40 @@
+class App {
+    constructor() {
+        this.contentElement = document.getElementById('content');
+        this.initEventListeners();
+        this.loadContent('home'); // Load home page by default
+    }
+
+    initEventListeners() {
+        // Array of page links and their corresponding names
+        const pages = [
+            { id: 'homeLink', name: 'home' },
+            { id: 'aboutLink', name: 'about' },
+            { id: 'contactLink', name: 'contact' },
+        ];
+
+        // Loop through the pages array and set up event listeners
+        pages.forEach(page => {
+            document.getElementById(page.id).addEventListener('click', () => this.loadContent(page.name));
+        });
+    }
+
+    async loadContent(page) {
+        try {
+            const response = await fetch(`view/${page}.html`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const html = await response.text();
+            this.contentElement.innerHTML = html;
+        } catch (error) {
+            this.contentElement.innerHTML = `<h1>404</h1><p>Page not found.</p>`;
+            console.error('Error loading content:', error);
+        }
+    }
+}
+
+// Initialize the app when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new App();
+});

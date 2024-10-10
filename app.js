@@ -9,7 +9,7 @@ class App {
         // Array of page links and their corresponding names
         const pages = [
             { id: 'homeLink', name: 'home' },
-            { id: 'aboutLink', name: 'about' },
+            { id: 'chartsLink', name: 'charts' },
             { id: 'contactLink', name: 'contact' },
         ];
 
@@ -21,7 +21,7 @@ class App {
 
     async loadContent(page) {
         try {
-            const response = await fetch(`view/${page}.html`);
+            const response = await fetch(`views/${page}.html`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

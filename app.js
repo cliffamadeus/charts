@@ -2,18 +2,16 @@ class App {
     constructor() {
         this.contentElement = document.getElementById('content');
         this.initEventListeners();
-        this.loadContent('home'); // Load home page by default
+        this.loadContent('home');
     }
 
     initEventListeners() {
-        // Array of page links and their corresponding names
         const pages = [
             { id: 'homeLink', name: 'home' },
             { id: 'chartsLink', name: 'charts' },
             { id: 'contactLink', name: 'contact' },
         ];
 
-        // Loop through the pages array and set up event listeners
         pages.forEach(page => {
             document.getElementById(page.id).addEventListener('click', () => this.loadContent(page.name));
         });

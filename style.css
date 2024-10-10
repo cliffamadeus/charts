@@ -7,3 +7,22 @@ body {
 #content {
     padding: 15px;
 }
+
+.cards-flex-container{
+    display:flex;
+    justify-content: auto;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    width: 80%;
+}
+
+.cards-flex-container > div {
+    margin-left: 10px;
+    margin-top: .5rem;
+}
+
+.title{
+    margin-left: 45px;
+}
